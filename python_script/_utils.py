@@ -89,7 +89,7 @@ def html_filter(input_text):
     """
     return re.sub('<\/?[\s\S]*?(?:".*")*>','',input_text)
 
-def filter_tags(htmlstr):
+def _filter_tags(htmlstr):
     """
     Python通过正则表达式去除(过滤)HTML标签
 
@@ -142,7 +142,7 @@ def filter_tags(htmlstr):
 
 
 
-def replaceCharEntity(htmlstr):
+def _replaceCharEntity(htmlstr):
     """
     :param htmlstr:HTML字符串
     :function:过滤HTML中的标签
@@ -168,12 +168,12 @@ def replaceCharEntity(htmlstr):
     return htmlstr
 
 
-def repalce(s, re_exp, repl_string):
+def _repalce(s, re_exp, repl_string):
     return re_exp.sub(repl_string,s)
 
 def cleaning_data(strs):
     strs=str(strs).replace('<p>&nbsp; &nbsp; &nbsp; &nbsp;','').replace('</p><p><br></p>','').replace('<br>','').replace('</p>','').replace('<p>','').replace('       ','').replace('[图片]','').strip()
-    strs=filter_tags(strs)
-    return replaceCharEntity(strs)
+    strs=_filter_tags(strs)
+    return _replaceCharEntity(strs)
 
 
