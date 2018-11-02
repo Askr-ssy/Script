@@ -72,8 +72,6 @@ def cut_filename(path):
 
     :returns: str 文件后缀
     """
-    if not os.path.isfile(path):
-        return ("not file")
     path = os.path.split(path)
     cut = os.path.splitext(path[1])
     return (path[0], cut[0], cut[1])
@@ -137,7 +135,7 @@ def _filter_tags(htmlstr):
     # 去掉多余的空行
     blank_line = re.compile('\n+')
     s = blank_line.sub('\n', s)
-    s = replaceCharEntity(s)  # 替换实体
+    s = _replaceCharEntity(s)  # 替换实体
     return s
 
 
@@ -175,5 +173,3 @@ def cleaning_data(strs):
     strs=str(strs).replace('<p>&nbsp; &nbsp; &nbsp; &nbsp;','').replace('</p><p><br></p>','').replace('<br>','').replace('</p>','').replace('<p>','').replace('       ','').replace('[图片]','').strip()
     strs=_filter_tags(strs)
     return _replaceCharEntity(strs)
-
-
