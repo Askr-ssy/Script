@@ -8,7 +8,7 @@ def check_folder(path):
     """
     if not os.path.exists(path):
         os.mkdir(path)   
-    return true
+    return True
 
 def find_all_file(rootdir='', **kw):
     """
