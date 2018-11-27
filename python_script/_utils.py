@@ -1,6 +1,14 @@
 #!/usr/bin/env python3
 import os
 import re
+def check_folder(path):
+    """
+    检查文件夹是否存在，缩短代码量
+
+    """
+    if not os.path.exists(path):
+        os.mkdir(path)   
+    return true
 
 def find_all_file(rootdir='', **kw):
     """
