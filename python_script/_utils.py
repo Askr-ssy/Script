@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import os
 import re
+import jieba
+
 def check_folder(path):
     """
     检查文件夹是否存在，缩短代码量
@@ -147,33 +149,6 @@ def _filter_tags(htmlstr):
     return s
 
 
-
-def _replaceCharEntity(htmlstr):
-    """
-    :param htmlstr:HTML字符串
-    :function:过滤HTML中的标签
-    """
-    CHAR_ENTITIES = {'nbsp': ' ', '160': ' ',
-                     'lt': '<', '60': '<',
-                     'gt': '>', '62': '>',
-                     'amp': '&', '38': '&',
-                     'quot': '"', '34': '"', }
-
-    re_charEntity = re.compile(r'&#?(?P<name>\w+);')
-    sz = re_charEntity.search(htmlstr)
-    while sz:
-        entity = sz.group()  # entity全称，如>
-        key = sz.group('name')  # 去除&;后entity,如>为gt
-        try:
-            htmlstr = re_charEntity.sub(CHAR_ENTITIES[key], htmlstr, 1)
-            sz = re_charEntity.search(htmlstr)
-        except KeyError:
-            # 以空串代替
-            htmlstr = re_charEntity.sub('', htmlstr, 1)
-            sz = re_charEntity.search(htmlstr)
-    return htmlstr
-
-
 def _repalce(s, re_exp, repl_string):
     return re_exp.sub(repl_string,s)
 
@@ -181,3 +156,16 @@ def cleaning_data(strs):
     strs=str(strs).replace('<p>&nbsp; &nbsp; &nbsp; &nbsp;','').replace('</p><p><br></p>','').replace('<br>','').replace('</p>','').replace('<p>','').replace('       ','').replace('[图片]','').strip()
     strs=_filter_tags(strs)
     return _replaceCharEntity(strs)
+
+def word_count(*args,**kwargs):
+    """词频统计,大->小"""
+    import jieba
+    content_count={}
+    content_cut=jieba.lcut(args[0])
+    for word in content_cut:
+        if word not in content_count:
+            content_count[word]=1
+        else:
+            content_count[word]+=1
+    content_count=sorted(content_count.items(),key=lambda x:x[1],reverse=True)
+    return content_count
