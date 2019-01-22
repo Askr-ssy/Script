@@ -86,6 +86,15 @@ def cut_filename(path):
     cut = os.path.splitext(path[1])
     return (path[0], cut[0], cut[1])
 
+def cut_url(url):
+    """
+    切分url
+    
+    --
+    :param url:url
+    :return []
+    """
+
 def html_filter(input_text):
     """
     过滤html标签
