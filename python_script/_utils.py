@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import os
 import re
-import jieba
 
 def check_folder(path):
     """
@@ -188,7 +187,10 @@ def cleaning_data(strs):
 
 def word_count(*args,**kwargs):
     """词频统计,大->小"""
-    import jieba
+    try:
+        import jieba
+    except:
+        return ()
     content_count={}
     content_cut=jieba.lcut(args[0])
     for word in content_cut:
