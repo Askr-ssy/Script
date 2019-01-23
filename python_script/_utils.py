@@ -47,6 +47,26 @@ def find_all_file(rootdir='', **kw):
                 __files.append(path)
     return __files
 
+def get_url_list(*args,**kwargs):
+    '''
+    把url构建成list \n
+    --
+    :param url: url 链接 \n
+    :returns: list 返回的列表
+
+    http://www.xinhuanet.com/travel \n
+    [com,xinhuanet,www,travel]
+    '''
+    from urllib import parse
+    url=args[0]
+    url_list=[]
+    url=parse.urlparse(url)
+    url_list.extend(reversed(url[1].split('.')))
+    
+    for url in url[2].split('/'):
+        if url!='':
+            url_list.append(url)
+    return url_list
 def isurl(url=None):
     """ 
     判断是否是url
