@@ -4,7 +4,10 @@ import re
 
 def check_folder(path):
     """
-    检查文件夹是否存在，缩短代码量
+    检查的文件夹是否存在，如果不存在则新建
+
+    --
+    :param path: 
 
     """
     if not os.path.exists(path):
@@ -116,23 +119,55 @@ def cut_url(url):
 
 def html_filter(input_text):
     """
-    过滤html标签
+    正则去除html标签
     
     --
     :param input_text: str 输入html文本
 
     :returns: str 去除html标签文本
     """
+    import re
     return re.sub('<\/?[\s\S]*?(?:".*")*>','',input_text)
 
 def _filter_tags(htmlstr):
     """
-    Python通过正则表达式去除(过滤)HTML标签
+    正则去除HTML标签
 
     --
     :param htmlstr:
     :return:
     """
+    def _replaceCharEntity(htmlstr):
+        """
+        :param htmlstr:HTML字符串
+        :function:过滤HTML中的标签
+        """
+        CHAR_ENTITIES = {'nbsp': ' ', '160': ' ',
+                        'lt': '<', '60': '<',
+                        'gt': '>', '62': '>',
+                        'amp': '&', '38': '&',
+                        'quot': '"', '34': '"', }
+
+        re_charEntity = re.compile(r'&#?(?P<name>\w+);')
+        sz = re_charEntity.search(htmlstr)
+        while sz:
+            entity = sz.group()  # entity全称，如>
+            key = sz.group('name')  # 去除&;后entity,如>为gt
+            try:
+                htmlstr = re_charEntity.sub(CHAR_ENTITIES[key], htmlstr, 1)
+                sz = re_charEntity.search(htmlstr)
+            except KeyError:
+                # 以空串代替
+                htmlstr = re_charEntity.sub('', htmlstr, 1)
+                sz = re_charEntity.search(htmlstr)
+        return htmlstr
+    def _repalce(s, re_exp, repl_string):
+        return re_exp.sub(repl_string,s)        
+    def cleaning_data(strs):
+        strs=str(strs).replace('<p>&nbsp; &nbsp; &nbsp; &nbsp;','').replace('</p><p><br></p>','').replace('<br>','').replace('</p>','').replace('<p>','').replace('       ','').replace('[图片]','').strip()
+        strs=_filter_tags(strs)
+        return _replaceCharEntity(strs)
+
     # CDATA
     re_cdata = re.compile('//<!\
     CDATA\[[ >]∗ //\
@@ -176,15 +211,6 @@ def _filter_tags(htmlstr):
     s = _replaceCharEntity(s)  # 替换实体
     return s
 
-
-def _repalce(s, re_exp, repl_string):
-    return re_exp.sub(repl_string,s)
-
-def cleaning_data(strs):
-    strs=str(strs).replace('<p>&nbsp; &nbsp; &nbsp; &nbsp;','').replace('</p><p><br></p>','').replace('<br>','').replace('</p>','').replace('<p>','').replace('       ','').replace('[图片]','').strip()
-    strs=_filter_tags(strs)
-    return _replaceCharEntity(strs)
-
 def word_count(*args,**kwargs):
     """词频统计,大->小"""
     try:
@@ -200,28 +226,3 @@ def word_count(*args,**kwargs):
             content_count[word]+=1
     content_count=sorted(content_count.items(),key=lambda x:x[1],reverse=True)
     return content_count
-
-def _replaceCharEntity(htmlstr):
-    """
-    :param htmlstr:HTML字符串
-    :function:过滤HTML中的标签
-    """
-    CHAR_ENTITIES = {'nbsp': ' ', '160': ' ',
-                     'lt': '<', '60': '<',
-                     'gt': '>', '62': '>',
-                     'amp': '&', '38': '&',
-                     'quot': '"', '34': '"', }
-
-    re_charEntity = re.compile(r'&#?(?P<name>\w+);')
-    sz = re_charEntity.search(htmlstr)
-    while sz:
-        entity = sz.group()  # entity全称，如>
-        key = sz.group('name')  # 去除&;后entity,如>为gt
-        try:
-            htmlstr = re_charEntity.sub(CHAR_ENTITIES[key], htmlstr, 1)
-            sz = re_charEntity.search(htmlstr)
-        except KeyError:
-            # 以空串代替
-            htmlstr = re_charEntity.sub('', htmlstr, 1)
-            sz = re_charEntity.search(htmlstr)
-    return htmlstr
