@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import os
 import re
-
+import sys
 
 PY2 = sys.version_info[0] == 2
 default_encoding = sys.getfilesystemencoding()
@@ -57,7 +57,7 @@ def find_all_file(rootdir='', **kw):
 def get_url_list(*args,**kwargs):
     '''
     把url构建成list \n
-    --
+    --  
     :param url: url 链接 \n
     :returns: list 返回的列表
 
