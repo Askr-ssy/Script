@@ -2,6 +2,11 @@
 import os
 import re
 
+
+PY2 = sys.version_info[0] == 2
+default_encoding = sys.getfilesystemencoding()
+
+
 def check_folder(path):
     """
     检查的文件夹是否存在，如果不存在则新建
@@ -69,12 +74,57 @@ def get_url_list(*args,**kwargs):
         if url!='':
             url_list.append(url)
     return url_list
-def isurl(url=None):
+
+def check_chinese(strs=None):
+    """
+    检查字符串是否全部为中文
+    
+    --
+    :paran str:默认位空
+    :return bool: 全部为中文返回 True 否则返回 False
+    """
+
+    i=0
+    if strs:
+        for char in list(strs):
+            if char <u'\u4e00' or  char > u'\u9fff':
+                return False
+            else:
+                i+=1
+        return True
+    else:
+        return False
+    
+
+def strdecode(sentence=None):
+    """
+    字符串编码
+
+    --
+    :paran sentence: str 默认为空
+    
+    :return sentence: str 返回unicode编码的字符串
+    """
+    if not sentence:
+        return False
+    if PY2:
+        text_type = unicode
+    else:
+        text_type = str
+
+    if not isinstance(sentence, text_type):# 非Unicode
+        try:
+            sentence = sentence.decode('utf-8')# utf-8解码为Unicode
+        except UnicodeDecodeError:# UnicodeDecodeError则用gbk解码为Unicode
+            sentence = sentence.decode('gbk', 'ignore')# 设置为ignore，则会忽略非法字符
+    return sentence
+
+def is_url(url=None):
     """ 
     判断是否是url
 
     --
-    :param url: None 默认为空
+    :param url: str 默认为空
 
     :returns: Bool 是返回True,否者返回False
     """
@@ -110,12 +160,14 @@ def cut_filename(path):
 
 def cut_url(url):
     """
-    切分url
+    切分url(未完成)
     
     --
     :param url:url
     :return []
     """
+    pass
+
 
 def html_filter(input_text):
     """
