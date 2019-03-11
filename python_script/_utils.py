@@ -301,3 +301,10 @@ def word_count(*args,**kwargs):
             content_count[word]+=1
     content_count=sorted(content_count.items(),key=lambda x:x[1],reverse=True)
     return content_count
+
+def dict_to_sql(*args,**kwargs):
+    """
+    字典类型转化成sql语句进行插入
+
+    """
+    pass
