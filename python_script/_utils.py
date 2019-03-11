@@ -12,8 +12,10 @@ def check_folder(path):
     检查的文件夹是否存在，如果不存在则新建
 
     --
-    :param path: 
-
+    Args:
+        path: 绝对路径字符串
+    Return:
+        Bool: 正确检查返回True
     """
     if not os.path.exists(path):
         os.mkdir(path)   
@@ -24,12 +26,16 @@ def find_all_file(rootdir='', **kw):
     遍历文件列表
 
     --
-    :param rootpath: "THIS_FOLDER" 绝对路径,默认为文件当前路径
+    Args:
+        rootpath: 传入一个绝对路径
+    
+    Kwargs:
+        suffix_filter: ['XLSX'] 文件后缀筛选,需要的文件后缀,默认为
+                        xlsx,xls,xlsm
+        name_filter: [''] 文件名关键字筛选，含有关键字的文件不会被返回
 
-    :param suffix_filter: ['XLSX'] 文件后缀筛选,需要的文件后缀
-
-    :param name_filter: [''] 文件名关键字筛选，含有关键字的文件不会被返回
-    :returns: ["",""] 绝对文件路径
+    Return:
+        ["",""] 绝对文件路径
     """
 
     files_dir = os.listdir(rootdir)
@@ -38,10 +44,9 @@ def find_all_file(rootdir='', **kw):
         'xls', 'xlsx', 'xlsm']
     name_fileter = kw['name_filter'] if 'name_filter' in kw.keys() else []
     for i in range(0, len(files_dir)):
-
         path = os.path.join(rootdir, files_dir[i])
         if os.path.isdir(path):
-            __files.extend(find_all_file(path, suffix_filter=suffix_filter))
+            __files.extend(find_all_file(path, **kw))
         if os.path.isfile(path):
             # 过滤文件名
             for each in name_fileter:
@@ -56,13 +61,17 @@ def find_all_file(rootdir='', **kw):
 
 def get_url_list(*args,**kwargs):
     '''
-    把url构建成list \n
-    --  
-    :param url: url 链接 \n
-    :returns: list 返回的列表
-
-    http://www.xinhuanet.com/travel \n
-    [com,xinhuanet,www,travel]
+    把url构建成list
+    --
+    Args:
+        args[0]: url 链接
+    
+    Return: 
+        list 返回的列表
+    
+    Demo:
+        input:  http://www.xinhuanet.com/travel \n
+        output: [com,xinhuanet,www,travel]
     '''
     from urllib import parse
     url=args[0]
@@ -78,10 +87,12 @@ def get_url_list(*args,**kwargs):
 def check_chinese(strs=None):
     """
     检查字符串是否全部为中文
-    
     --
-    :paran str:默认位空
-    :return bool: 全部为中文返回 True 否则返回 False
+    Args:
+        strs: 默认位空
+    
+    Return:
+        bool: 全部为中文返回 True 否则返回 False
     """
 
     i=0
@@ -99,11 +110,12 @@ def check_chinese(strs=None):
 def strdecode(sentence=None):
     """
     字符串编码
-
     --
-    :paran sentence: str 默认为空
+    Args:
+        sentence: str 默认为空
     
-    :return sentence: str 返回unicode编码的字符串
+    Return:
+        sentence: str 返回unicode编码的字符串
     """
     if not sentence:
         return False
@@ -122,11 +134,12 @@ def strdecode(sentence=None):
 def is_url(url=None):
     """ 
     判断是否是url
-
     --
-    :param url: str 默认为空
+    Args:
+        url: str 默认为空
 
-    :returns: Bool 是返回True,否者返回False
+    Return:
+        Bool: 是返回True,否者返回False
     """
     if url == None:
         return False
@@ -142,17 +155,14 @@ def is_url(url=None):
 
 def cut_filename(path):
     """
-    传入绝对路径文件名
-
+    切分绝对路径文件名
     --
+    Args:
+        path: str 绝对路径
 
-    :param path: str 绝对路径
+    Returns:
+        (上一级绝对路径,文件名,文件后缀)
 
-    :returns: str 绝对路径
-
-    :returns: str 文件名
-
-    :returns: str 文件后缀
     """
     path = os.path.split(path)
     cut = os.path.splitext(path[1])
@@ -161,7 +171,6 @@ def cut_filename(path):
 def cut_url(url):
     """
     切分url(未完成)
-    
     --
     :param url:url
     :return []
@@ -169,25 +178,29 @@ def cut_url(url):
     pass
 
 
-def html_filter(input_text):
+def html_filter(input_text=''):
     """
-    正则去除html标签
-    
+    正则去除html所有标签(贪婪)
     --
-    :param input_text: str 输入html文本
+    Args:
+        input_text: str 输入html文本
 
-    :returns: str 去除html标签文本
+    Return:
+        str 去除html标签文本
     """
     import re
     return re.sub('<\/?[\s\S]*?(?:".*")*>','',input_text)
 
 def _filter_tags(htmlstr):
     """
-    正则去除HTML标签
+    正则去除HTML标签(剪枝)
 
     --
-    :param htmlstr:
-    :return:
+    Args:
+        htmlstr: 输入的html文本
+    
+    Return:
+        str 返回的文本
     """
     def _replaceCharEntity(htmlstr):
         """
@@ -264,10 +277,20 @@ def _filter_tags(htmlstr):
     return s
 
 def word_count(*args,**kwargs):
-    """词频统计,大->小"""
+    """词频统计,大->小
+    
+    Args:
+        args[0]: 输入的字符串类型文本
+
+    Return:
+        ((词,词频))
+    
+    Raises:
+        ImportError: 导入分词器错误(jieba)
+    """
     try:
         import jieba
-    except:
+    except ImportError:
         return ()
     content_count={}
     content_cut=jieba.lcut(args[0])
