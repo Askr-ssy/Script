@@ -35,5 +35,3 @@ def _index(S,P):
         return i-j
     else:
         return -1
-print(S.index(P))
-print(_index(S,P))
