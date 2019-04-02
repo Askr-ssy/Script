@@ -7,6 +7,8 @@ import hashlib
 import collections
 import numbers
 
+from jieba.analyse import extract_tags
+
 from itertools import groupby
 
 if sys.version_info[0]>=3:
@@ -57,7 +59,11 @@ class Simhash(object):
         content=''.join(re.findall(self.reg,content))
         ans=self._side(content)
         return ans
-    
+
+    def build_features_by_text(self,content):
+        features={k:int(w) for k,w in extract_tags(content,topK=1000,withWeight=True)}
+        return self.build_hash_by_features(features)
+
     def build_weight_by_text(self,content):
         features=self._tokenize(content)
         features={k:sum(1 for _ in g) for k,g in groupby(sorted(features))}
