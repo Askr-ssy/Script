@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7749ba30-41aa-49d2-966f-cda3ef1b84f0}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>Python_Script\Cantor_expansion.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Python_Script\Ac_KeyWordTree.py" />
+    <Compile Include="Python_Script\Cantor_expansion.py" />
+    <Compile Include="Python_Script\jaccardsimilarity.py" />
+    <Compile Include="Python_Script\KMP.py" />
+    <Compile Include="Python_Script\simhash.py" />
+    <Compile Include="Python_Script\similar.py" />
+    <Compile Include="Python_Script\VSM.py" />
+    <Compile Include="Python_Script\win32script_execl.py" />
+    <Compile Include="Python_Script\_utils.py" />
+    <Compile Include="Scrapy_Spider\souyun\items.py" />
+    <Compile Include="Scrapy_Spider\souyun\middlewares.py" />
+    <Compile Include="Scrapy_Spider\souyun\pipelines.py" />
+    <Compile Include="Scrapy_Spider\souyun\settings.py" />
+    <Compile Include="Scrapy_Spider\souyun\spiders\Story.py" />
+    <Compile Include="Scrapy_Spider\souyun\spiders\__init__.py" />
+    <Compile Include="Scrapy_Spider\souyun\__init__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Python_Script" />
+    <Folder Include="Scrapy_Spider\" />
+    <Folder Include="Scrapy_Spider\souyun" />
+    <Folder Include="Scrapy_Spider\souyun\spiders" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+</Project>
