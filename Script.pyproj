@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{7749ba30-41aa-49d2-966f-cda3ef1b84f0}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>Python_Script\Cantor_expansion.py</StartupFile>
+    <StartupFile>Python_Script\Congruence_theorem.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -21,6 +21,7 @@
   <ItemGroup>
     <Compile Include="Python_Script\Ac_KeyWordTree.py" />
     <Compile Include="Python_Script\Cantor_expansion.py" />
+    <Compile Include="Python_Script\Congruence_theorem.py" />
     <Compile Include="Python_Script\jaccardsimilarity.py" />
     <Compile Include="Python_Script\KMP.py" />
     <Compile Include="Python_Script\simhash.py" />
