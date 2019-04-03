@@ -34,5 +34,5 @@ def uncantor(*args,**kwargs):
 
 
 if __name__ == "__main__":
-    print(cantor(34152)+1)
-    print(uncantor(cantor(34152)+1,{1,2,3,4,5}))
+    print(cantor(124)+1)
+    print(uncantor(cantor(124)+1,{1,2,4}))
