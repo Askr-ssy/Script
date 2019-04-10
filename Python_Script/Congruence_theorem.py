@@ -7,7 +7,7 @@ def congruence(*args,**kwargs):
 
 def powmod(*args,**kwargs):
     '''
-    n^b mod c
+    a^v mod c
     '''
     a=args[0]
     b=args[1]   

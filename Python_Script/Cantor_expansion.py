@@ -1,3 +1,6 @@
+"""
+康托展开和逆康托展开
+"""
 import math
 
 def cantor(*args,**kwargs):
