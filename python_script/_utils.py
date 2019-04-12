@@ -280,7 +280,7 @@ def word_count(*args,**kwargs):
     """词频统计,大->小
     
     Args:
-        args[0]: 输入的字符串类型文本
+        args[0]: str 输入的字符串类型文本
 
     Return:
         ((词,词频))
@@ -304,7 +304,28 @@ def word_count(*args,**kwargs):
 
 def dict_to_sql(*args,**kwargs):
     """
-    字典类型转化成sql语句进行插入
+    字典类型转化成sql语句进行插入(未完成)
 
     """
     pass
+
+def import_sys_package(*args,**kwargs):
+    """
+    指定导入已导入的包
+
+    Args:
+        args[0]: str 包的名称
+    
+    Return:
+        Object: 已导入的包
+    
+    Raises:
+        ImportError: 未找到指定包
+    """
+    name=args[0]
+    import sys
+    if name in sys.modules:
+        return sys.modules.get(name)
+    else:
+        raise ImportError("No imported packages {}".format(name))
+    

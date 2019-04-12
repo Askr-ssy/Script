@@ -1,3 +1,6 @@
+'''
+同余定理和次方求模
+'''
 import math 
 def congruence(*args,**kwargs):
     a=args[0]
