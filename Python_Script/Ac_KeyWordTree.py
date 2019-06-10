@@ -6,6 +6,7 @@ Ac自动机-修改版(多模匹配)
 """
 from builtins import object
 
+__all__=['add','finalize_fail','search_all','search_one','search']
 class State(object):
     __slots__=['symbol','id','transitions','parent','success','keyword','fail']
 

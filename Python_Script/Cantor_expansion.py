@@ -17,7 +17,7 @@ def cantor(*args,**kwargs):
             if lis[j]<lis[i]:
                 count+=1
         sum+=count*math.factorial(n-i-1)
-        print(sum,n-i-1)
+        # print(sum,n-i-1)
     return sum
 
 def uncantor(*args,**kwargs):
@@ -38,5 +38,5 @@ def uncantor(*args,**kwargs):
 
 
 if __name__ == "__main__":
-    print(cantor(31452)+1)
-    # print(uncantor(cantor(31452)+1,{1,2,3,4,5}))
+    print(cantor(312)+1)
+    print(uncantor(cantor(312)+1,{1,2,3,4,5}))
