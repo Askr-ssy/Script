@@ -7,15 +7,15 @@ def _index(S,P):
         pLen=len(P)
         _next=[None]*pLen
         _next[0]=-1
-        k=-1
-        j=0 
+        j=-1
+        i=0 
         while j<pLen-1:
-            if k==-1 or P[j]==P[k]:
-                k+=1
+            if j==-1 or P[i]==P[j]:
                 j+=1
-                _next[j]=k
+                i+=1
+                _next[i]=j
             else:
-                k=_next[k]
+                j=_next[j]
         return _next
     
     _next=getNext(P)
