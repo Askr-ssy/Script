@@ -9,7 +9,7 @@ def _index(S,P):
         _next[0]=-1
         j=-1
         i=0 
-        while j<pLen-1:
+        while i<pLen-1:
             if j==-1 or P[i]==P[j]:
                 j+=1
                 i+=1
