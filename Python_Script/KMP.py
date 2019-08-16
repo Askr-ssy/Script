@@ -7,7 +7,7 @@ def _index(S,P):
         pLen=len(P)
         _next=[None]*pLen
         _next[0]=-1
-        j=-1
+        j=-1        # 最长公共前缀和后缀的位置0-j
         i=0 
         while i<pLen-1:
             if j==-1 or P[i]==P[j]:
