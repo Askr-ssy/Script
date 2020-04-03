@@ -16,7 +16,7 @@ export https_proxy=socks5://127.0.0.1:1080
 # --- end
 
 # --- 安装 vim 等系统软件
-
+apt install vim
 # --- end
 
 # --- 安装 用户软件
