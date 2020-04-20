@@ -8,14 +8,14 @@ namespace askr{
     class State{    // TODO 支持模板
         public:
             State(){};
-            State(int _id,char _symbol=NULL,State *_parent=nullptr,bool _success=false,
+            State(int _id,char16_t _symbol='',State *_parent=nullptr,bool _success=false,
             std::string _keyword="",State *_fail=nullptr):id(_id),symbol(_symbol),
             parent(_parent),success(_success),
             keyword(_keyword),fail(_fail){};
         public:
             int id;
-            char symbol;
-            std::map<std::string,State*> transitions();
+            char16_t symbol;
+            std::map<char16_t,State*> transitions;
             State *parent;
             bool success;
             std::string keyword;
@@ -31,7 +31,7 @@ namespace askr{
             if (keyword.size()==0) return;
 
             State *current_state=this->root_state;
-            for (std::string::const_iterator ch=keyword.cbegin();ch!=keyword.cend();++ch){
+            for (auto ch=keyword.begin();ch!=keyword.end();++ch){
                 std::map<std::string,int>::iterator flag = current_state->transitions.find(*ch);
                 if (flag!=current_state->transitions.end()){
                     current_state = current_state->transitions[*ch];
@@ -46,6 +46,36 @@ namespace askr{
             current_state->keyword=keyword;
         }
 
+        void finalize_fail(){
+            if (this->finalized)return;
+            this->root_state->fail=this->root_state;
+            this->search_fail_for_children(this->root_state);
+            this->finalized=true;
+        }
+
+        size_t search_all(std::string str){
+            if (!this->finalized) return -1;
+
+            State * current_state = this->root_state;
+            for(size_t idx=0;idx<str.size();++idx){
+                if (current_state->transitions.find(str[idx])==current_state->transitions.end()){
+                    if(this->root_state->transitions.find(str[idx])==this->root_state->transitions.end())
+                        current_state=this->root_state;
+                    else
+                        current_state=this->root_state->transitions[str[idx]];
+                }
+                else
+                    current_state=current_state->transitions[str[idx]];
+                State * state=current_state;
+                while(state!=this->root_state){
+                    if(state->success){
+                        return idx+1-str.size();
+                    }
+                    state=state->fail;
+                }
+            }
+        }
+        private:
         // 建立 单个节点的 fail指针
         void search_fail(State* state){
             if (state->fail)return;
@@ -92,37 +122,7 @@ namespace askr{
                 }
             }
 
-        }
-
-        void finalize_fail(){
-            if (this->finalized)return;
-            this->root_state->fail=this->root_state;
-            this->search_fail_for_children(this->root_state);
-            this->finalized=true;
-        }
-
-        size_t search_all(std::string str){
-            if (!this->finalized) return -1;
-
-            State * current_state = this->root_state;
-            for(size_t idx=0;idx<str.size();++idx){
-                if (current_state->transitions.find(str[idx])==current_state->transitions.end()){
-                    if(this->root_state->transitions.find(str[idx])==this->root_state->transitions.end())
-                        current_state=this->root_state;
-                    else
-                        current_state=this->root_state->transitions[str[idx]];
-                }
-                else
-                    current_state=current_state->transitions[str[idx]];
-                State * state=current_state;
-                while(state!=this->root_state){
-                    if(state->success){
-                        return idx+1-str.size();
-                    }
-                    state=state->fail;
-                }
-            }
-        }
+        }        
     };
 }
 #endif
