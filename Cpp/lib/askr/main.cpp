@@ -3,13 +3,13 @@
 #include<typeinfo>
 #include<iostream>
 #include"Unicode.hpp"
-#include"AcTree.hpp"
+#include"AhoCorasick.hpp"
 #include<map>
 using namespace std;
 int main(void){
     std::string str{"122344"};
     std::map<uint32_t,double> m{{'知',1}};
-    askr::KeywordTree actree;
+    askr::AhoCorasickTree actree;
     actree.add({1,2});
     actree.add({3,4,5});
     actree.finalize_fail();
