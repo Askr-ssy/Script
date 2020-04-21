@@ -2,16 +2,25 @@
 #include<string>
 #include<typeinfo>
 #include<iostream>
+#include"Unicode.hpp"
+#include"AcTree.hpp"
 #include<map>
 using namespace std;
 int main(void){
-    std::string str{"知122344"};
+    std::string str{"122344"};
     std::map<uint32_t,double> m{{'知',1}};
+    askr::KeywordTree actree;
+    actree.add({1,2});
+    actree.add({3,4,5});
+    actree.finalize_fail();
+    int result = actree.search_all({3,4,5,6,7});
+    askr::DecodeUnicodeInString(str.c_str(),str.size());
+    // askr::Word();
     m.find(str[0])==m.end();
-    for (std::string::iterator at=str.begin();at!=str.end();at++){
-        cout<<typeid(str[0]).name()<<endl;
-        std::cout<<typeid((*at)).name()<<" :"<<*at<<std::endl;
-    }
+    // for (std::string::iterator at=str.begin();at!=str.end();at++){
+    //     cout<<typeid(str[0]).name()<<endl;
+    //     std::cout<<typeid((*at)).name()<<" :"<<*at<<std::endl;
+    // }
     // askr::KeywordTree act;
     // act.add("苹果");
     // act.add("香蕉");

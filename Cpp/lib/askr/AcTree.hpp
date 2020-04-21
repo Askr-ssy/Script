@@ -4,21 +4,22 @@
 #include<string>
 #include<set>
 #include<list>
+#include"Unicode.hpp"
 namespace askr{
     class State{    // TODO 支持模板
         public:
             State(){};
-            State(int _id,char16_t _symbol='',State *_parent=nullptr,bool _success=false,
-            std::string _keyword="",State *_fail=nullptr):id(_id),symbol(_symbol),
+            State(int _id,uint32_t _symbol=NULL,State *_parent=nullptr,bool _success=false,
+            askr::Unicode keyword={},State *_fail=nullptr):id(_id),symbol(_symbol),
             parent(_parent),success(_success),
-            keyword(_keyword),fail(_fail){};
+            keyword(keyword),fail(_fail){};
         public:
             int id;
-            char16_t symbol;
-            std::map<char16_t,State*> transitions;
+            uint32_t symbol;    // unicode
+            std::map<uint32_t,State*> transitions;
             State *parent;
             bool success;
-            std::string keyword;
+            askr::Unicode keyword;
             State *fail;
     };
     class KeywordTree{
@@ -26,13 +27,13 @@ namespace askr{
             State *root_state= new State(0);
             int counter{1};
             bool finalized=false;
-        void add(std::string keyword){
+        void add(askr::Unicode keyword){
             if (this->finalized) return;     //TODO 增加错误机制
             if (keyword.size()==0) return;
 
             State *current_state=this->root_state;
-            for (auto ch=keyword.begin();ch!=keyword.end();++ch){
-                std::map<std::string,int>::iterator flag = current_state->transitions.find(*ch);
+            for (askr::Unicode::iterator ch = keyword.begin();ch!=keyword.end();++ch){
+                std::map<uint32_t,State*>::iterator flag = current_state->transitions.find(*ch);
                 if (flag!=current_state->transitions.end()){
                     current_state = current_state->transitions[*ch];
                 }
@@ -53,7 +54,7 @@ namespace askr{
             this->finalized=true;
         }
 
-        size_t search_all(std::string str){
+        size_t search_all(askr::Unicode str){
             if (!this->finalized) return -1;
 
             State * current_state = this->root_state;
@@ -69,7 +70,8 @@ namespace askr{
                 State * state=current_state;
                 while(state!=this->root_state){
                     if(state->success){
-                        return idx+1-str.size();
+                        askr::Unicode keyword = state->keyword;
+                        return idx+1-keyword.size();
                     }
                     state=state->fail;
                 }
@@ -83,7 +85,7 @@ namespace askr{
             State *partent=state->parent;
             State *partent_fail = partent->fail;
             while (true){
-                std::map<std::string,int>::iterator flag = partent_fail->transitions.find(state->symbol);
+                std::map<uint32_t,State *>::iterator flag = partent_fail->transitions.find(state->symbol);
                 if (flag!=partent_fail->transitions.end() && partent_fail->transitions[state->symbol]!=state){
                     state->fail = partent_fail->transitions[state->symbol];
                     break;
@@ -100,7 +102,7 @@ namespace askr{
             if (suffix->fail ==nullptr)
                 this->search_fail(suffix);
             
-            for(std::map<std::string,State *>::iterator it=suffix->transitions.begin();it!=suffix->transitions.end();++it){
+            for(std::map<uint32_t,State *>::iterator it=suffix->transitions.begin();it!=suffix->transitions.end();++it){
                 if((state->transitions.find((*it).first)==state->transitions.end()) && suffix != this->root_state)
                     state->transitions[(*it).first]=(*it).second;
             }
@@ -114,7 +116,7 @@ namespace askr{
                 State * state = to_process.front();
                 to_process.pop_front();
                 processed.insert(state->id);
-                for (std::map<std::string,State*>::iterator child = state->transitions.begin();child!=state->transitions.end();++child){
+                for (std::map<uint32_t,State*>::iterator child = state->transitions.begin();child!=state->transitions.end();++child){
                     if(processed.count((*child).second->id)==0){
                         this->search_fail((*child).second);
                         to_process.push_back((*child).second);
