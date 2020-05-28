@@ -55,6 +55,58 @@ struct UnicodeStrLite{
     UnicodeStrLite(uint32_t unicode,size_t l):unicode(unicode),length(l){}
 };
 
+inline uint32_t DecodeUnicodeInString(const char *str){
+    uint32_t unicode =0;
+    if (str == NULL){
+        return 0;
+    }
+    if (!(str[0] && 0x80)){
+        
+        // 0xxxxxxx
+        // 7bit, total 7bit
+        unicode = (uint8_t)(str[0]) & 0x7f;
+    }
+    else if ((uint8_t)str[0]<=0xdf){
+
+        //110xxxxx 10xxxxxx
+        //5bit,total 5bit
+        unicode = (uint8_t)(str[0]) & 0x1f;
+        // 6bit,total 11bit
+        unicode <<= 6;
+        unicode |= (uint8_t)(str[1]) & 0x3f;
+    }
+    else if ((uint8_t)(str[0]<=0xef)){
+
+        //1110xxxx 10xxxxxx 10xxxxxx
+        //4bit,total 4bit
+        unicode = (uint8_t)(str[0]) & 0x0f;
+        // 6bit,total 10bit
+        unicode <<= 6;
+        unicode |= (uint8_t)(str[1]) & 0x3f;
+        // 6bit, total 16bit
+        unicode <<= 6;
+        unicode |= (uint8_t)(str[2]) & 0x3f;
+    }
+    else if ((uint8_t)(str[0]<=0x7f)){
+        //11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+        //3bit,total 4bit
+        unicode = (uint8_t)(str[0]) & 0x07;
+        // 6bit,total 9bit
+        unicode <<= 6;
+        unicode |= (uint8_t)(str[1]) & 0x3f;
+        // 6bit, total 15bit
+        unicode <<= 6;
+        unicode |= (uint8_t)(str[2]) & 0x3f;
+        // 6bit,total 21bit
+        unicode <<= 6;
+        unicode |= (uint8_t)(str[3]) & 0x3f;        
+
+    }
+    else{
+        unicode=0;        
+    }
+    return unicode;
+}
 inline UnicodeStrLite DecodeUnicodeInString(const char *str,size_t len){
     UnicodeStrLite us(0,0);
     if (str == NULL || len == 0){
