@@ -14,7 +14,7 @@ function crlf_to_lf {
 
 function install_docker {
     sudo apt-get update
-    sudo apt-get install \
+    sudo apt-get install -y \
         apt-transport-https \
         ca-certificates \
         curl \
@@ -40,6 +40,27 @@ function install_docker {
 }
 
 function uninstall_docker {
-    sudo apt-get purge docker-ce
+    sudo apt-get purge docker-ce docker-ce-cli containerd.io
     sudo rm -rf /var/lib/docker
+}
+function install_qbittorrent {
+    sudo add-apt-repository ppa:qbittorrent-team/qbittorrent-stable
+    sudo apt-get update && sudo apt-get install qbittorrent
+}
+function uninstall_qbittorrent {
+    apt-get --purge remove qbittorrent
+    sudo add-apt-repository -r ppa:qbittorrent-team/qbittorrent-stable
+}
+function install_telegram {
+    wget -c https://telegram.org/dl/desktop/linux -O ./telegram.tar.xz
+    xz -d ./telegram.tar.xz
+    tar -xvf  telegram.tar
+    rm -f telegram.tar
+    # TODO 移动文件
+}
+function install_postman {
+    wget -c https://dl.pstmn.io/download/latest/linux64 -O ./postman.tar.gz
+    tar -zxvf postman.tar.gz
+    rm -f postman.tar.gz
+    # TODO 移动文件
 }
